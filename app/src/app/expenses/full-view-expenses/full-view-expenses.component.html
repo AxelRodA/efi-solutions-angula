@@ -1,0 +1,22 @@
+<div class="container" fxLayout="column">
+  <div fxLayout="row">
+    <h2>Comprobante</h2>
+    <div class="spacer"></div>
+    <button mat-button color="warn" (click)="backClicked()">Regresar</button>
+  </div>
+  <img
+    [src]="url"
+    *ngIf="url"
+    frameborder="0"
+    style="
+      height: 100%;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+    "
+    height="100%"
+    width="100%"
+  />
+</div>

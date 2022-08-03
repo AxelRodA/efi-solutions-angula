@@ -1,0 +1,17 @@
+<div *ngIf="os.office$ | async as office" fxLayout="column" fxLayoutGap="15px">
+  <mat-card-title> {{ office.region }} - {{ office.name }}</mat-card-title>
+
+  <mat-card-subtitle> {{ office.address }} </mat-card-subtitle>
+  <mat-dialog-content fxLayout="column" fxLayoutGap="15px">
+    <app-google-map [lat]="office.lat" [lng]="office.lng"></app-google-map>
+    <h2>Técnico: {{ office.technician.name }}</h2>
+
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end">
+    <button mat-button mat-dialog-close color="warn">Cerrar</button>
+    <button mat-button color="primary" (click)="addContactDialog()">
+      <mat-icon>person_add</mat-icon>
+      Agregar Contacto
+    </button>
+  </mat-dialog-actions>
+</div>

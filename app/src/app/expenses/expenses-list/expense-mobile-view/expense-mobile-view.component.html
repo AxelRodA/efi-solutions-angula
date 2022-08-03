@@ -1,0 +1,80 @@
+<div fxLayout="column" fxLayoutGap="15px">
+  <mat-card fxHide.gt-sm="true">
+    <mat-card-header>
+      <mat-card-title>Gastos</mat-card-title>
+      <mat-card-subtitle>Lista de gasto</mat-card-subtitle>
+    </mat-card-header>
+    <mat-list>
+      <ng-container *ngFor="let expense of expenses">
+        <mat-list-item>
+          <h3 matLine>${{ expense.amount }}</h3>
+          <p matLine *ngIf="expense.expenseDate">
+            {{ expense.expenseDate.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+          <p matLine class="demo-2">{{ expense.expenseType }}</p>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Detalles"
+            (click)="viewExpense(expense.key)"
+          >
+            <mat-icon>list_alt</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteExpense(expense.key)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </mat-list>
+  </mat-card>
+
+  <mat-card fxHide.gt-sm="true">
+    <mat-card-header>
+      <mat-card-title>Depositos</mat-card-title>
+      <mat-card-subtitle>Lista de depositos</mat-card-subtitle>
+    </mat-card-header>
+    <mat-list>
+      <ng-container *ngFor="let deposit of deposits">
+        <mat-list-item>
+          <h3 matLine>${{ deposit.amount }}</h3>
+          <p matLine *ngIf="deposit.depositDate">
+            {{ deposit.depositDate.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+          <button
+            *ngIf="deposit.attachmentUrl"
+            mat-icon-button
+            color="accent"
+            matTooltip="Comprobante"
+            (click)="getReceipt(deposit.attachmentUrl)"
+          >
+            <mat-icon>list_alt</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            *ngIf="user.role == 'admin'"
+            (click)="deleteDeposit(deposit.key)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button
+          mat-icon-button
+          *ngIf="user.role == 'admin'"
+          (click)="editDeposit(deposit.key, deposit)"
+          color="primary"
+        >
+          <mat-icon>create</mat-icon>
+        </button>
+         
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </mat-list>
+  </mat-card>
+</div>

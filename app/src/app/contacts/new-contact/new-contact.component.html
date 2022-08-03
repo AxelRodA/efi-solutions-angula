@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Agregar Contacto</h2>
+<mat-dialog-content>
+  <form [formGroup]="contactForm" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre de contacto</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Posición</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of role" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono celular</mat-label>
+      <input matInput formControlName="cellphone" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>lada</mat-label>
+      <input matInput formControlName="lada" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phoneNumbers" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Extensión</mat-label>
+      <input matInput formControlName="ext" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-button
+    mat-dialog-close
+    color="primary"
+    (click)="newContact()"
+    [disabled]="contactForm.invalid"
+  >
+    Crear Contacto
+  </button>
+</mat-dialog-actions>

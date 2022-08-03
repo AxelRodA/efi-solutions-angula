@@ -1,0 +1,173 @@
+<div class="container">
+  <mat-card>
+    <form fxLayout="column" [formGroup]="newMaintanenceForm">
+      <h2>Nueva Orden Servico</h2>
+
+      <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" fxFlex="40">
+          <mat-label>Fecha de Servicio</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="serviceDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="40">
+          <mat-label>Sucursal</mat-label>
+          <mat-select
+            (selectionChange)="this.vs.getVehiclesByOffice($event.value)"
+            formControlName="office"
+          >
+            <ng-container *ngIf="os.offices$ | async as offices">
+              <mat-option *ngFor="let office of offices" [value]="office.key">
+                {{ office.region }} - {{ office.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="column" formArrayName="maintenances">
+        <div
+          fxLayout="column"
+          fxLayoutGap="5px"
+          *ngFor="let req of maintenances.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+            <b> Orden # {{ i + 1 }} - {{ getOrderNumber(i) }}</b>
+          </div>
+          <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline" fxFlex="22">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option
+                  *ngFor="let type of statusMaintenance"
+                  [value]="type"
+                  >{{ type }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="22">
+              <mat-label>Vehiculo</mat-label>
+              <mat-select
+                formControlName="vehicle"
+                (selectionChange)="this.vs.viewVehicle($event.value.key); setOrderNumber(i)"
+              >
+                <ng-container *ngIf="vs.vehiclesByOffice$ | async as vehicle">
+                  <mat-option *ngFor="let v of vehicle" [value]="v">{{
+                    v.vehicleId
+                  }}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="22">
+              <mat-label>Tecnico</mat-label>
+
+              <mat-select formControlName="technicianKey">
+                <ng-container *ngIf="ts.technicians$ | async as technicians">
+                  <mat-option
+                    *ngFor="let technician of technicians"
+                    [value]="technician.uid"
+                  >
+                    {{ technician.displayName }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+
+            <div fxFlex="15">
+              <mat-slide-toggle
+                formControlName="maintenance"
+                (change)="maintanenceChange(i)"
+                >Mantenimiento</mat-slide-toggle
+              >
+            </div>
+            <div fxFlex="15">
+              <mat-slide-toggle
+                formControlName="service"
+                (change)="maintanenceChange(i)"
+                >Garantía</mat-slide-toggle
+              >
+            </div>
+            <button mat-icon-button color="warn" fxflex="3" (click)="delete(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline" fxFlex="33">
+              <mat-label>Tipo de reparacion</mat-label>
+              <input
+                matInput
+                formControlName="typeRepair"
+                (change)="setOrderNumber(i)"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="33">
+              <mat-label>Tipo de Mantenimiento</mat-label>
+              <mat-select formControlName="typeOfService" (selectionChange)="setOrderNumber(i)">
+                <mat-option
+                  *ngFor="let type of typeOfServices"
+                  [value]="type"
+                  >{{ type }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="33">
+              <mat-label>Numero de Mantenimiento</mat-label>
+              <mat-select
+                formControlName="maintenanceNumber"
+                (selectionChange)="setOrderNumber(i)"
+              >
+                <ng-container *ngIf="vs.vehicle$ | async as vehicle">
+                  <ng-container
+                    *ngFor="let m of vehicle.maintenances; let i = index"
+                  >
+                    <mat-option
+                      [value]="m.maintenanceNumber"
+                      *ngIf="!m.actualDate"
+                    >
+                      {{ m.maintenanceNumber }}
+                    </mat-option>
+                  </ng-container>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-icon-button color="primary" (click)="addMaintenance()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <ng-container *ngIf="status; else elseTemplate">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button mat-button color="warn">Cancelar</button>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="newMaintanenceForm.invalid"
+            (click)="newMaintenance()"
+          >
+            Guardar
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <div class="counting" fxLayout="row" fxLayoutAlign="center center">
+          <b>Generando Servicios... {{ actualOrder }} /{{ totalOrders }}</b>
+        </div>
+      </ng-template>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,206 @@
+<ng-container *ngIf="ms.maintenance$ | async as maintenance">
+  <h2 mat-dialog-title>Orden de trabajo: {{ maintenance.orderNumber }}</h2>
+  <mat-dialog-content>
+    <div #pdf id="pdf">
+      <mat-card>
+        <div fxLayout="column">
+          <div fxLayout="row">
+            <div fxFlex="40">
+              <img
+                src="../../../assets/img/logo 1.png"
+                style="width: 100%; max-width: 300px"
+              />
+            </div>
+            <div fxFlex="25"></div>
+            <div fxFlex="35">
+              <br />
+              Orden #: {{ maintenance.orderNumber }}<br />
+              Creado:
+              <ng-container *ngIf="maintenance.created">
+                {{ maintenance.created.toDate() | date: "dd/MM/yyyy" }}
+              </ng-container>
+              <br />
+              Fecha:
+              <ng-container *ngIf="maintenance.serviceDate">
+                {{ maintenance.serviceDate.toDate() | date: "dd/MM/yyyy" }}
+              </ng-container>
+            </div>
+          </div>
+          <br />
+          <div fxLayout="row">
+            <div fxFlex="5"></div>
+            <div fxFlex="30">
+              <font size="+1"
+                ><b>{{ maintenance.vehicleKey.vehicleId }}</b></font
+              >
+              <br />
+              {{ maintenance.officeKey.name }}<br />
+              {{ maintenance.vehicleKey.characteristics }}
+            </div>
+            <div fxFlex="30"></div>
+            <div fxFlex="20">
+              Reparación:
+              <ng-container>{{
+                maintenance.isRepair ? "Si" : "---"
+              }}</ng-container>
+              <br />
+              <ng-container *ngIf="maintenance.isMaintanence">
+                Mantenimiento:
+                {{
+                  maintenance.maintenanceType == "Mantenimiento"
+                    ? "Menor"
+                    : "Mayor"
+                }}
+                <br />
+                Mantenimiento #:
+                <ng-container>{{ maintenance.maintenanceNumber }}</ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <br />
+
+          <div fxLayout="row" class="header">
+            <div fxFlex="5"></div>
+            <div fxFlex="30"><b>No. de Serie</b></div>
+            <div fxFlex="30"><b>Km Anterior</b></div>
+            <div fxFlex="30"><b>Km actual</b></div>
+            <div fxFlex="5"></div>
+          </div>
+          <div fxLayout="row" class="info">
+            <div fxFlex="5"></div>
+            <div fxFlex="30">{{ maintenance.vehicleKey.vin }}</div>
+            <div fxFlex="30">{{ maintenance.vehicleKmBefore }}</div>
+            <div fxFlex="30">{{ maintenance.vehicleKmAfter || "" }}</div>
+            <div fxFlex="5"></div>
+          </div>
+          <br />
+
+          <div fxLayout="row" class="header">
+            <div fxFlex="50" fxLayoutAlign="center center">
+              <b>Horas Gas</b>
+            </div>
+            <div fxFlex="50" fxLayoutAlign="center center">
+              <b>Horas Gasolina</b>
+            </div>
+          </div>
+
+          <div fxLayout="row" class="info">
+            <div fxFlex="50" class="divborder2"></div>
+            <div fxFlex="50" class="divborder2"></div>
+          </div>
+          <br />
+
+          <div fxLayout="row" class="header">
+            <div fxFlex="20" fxLayoutAlign="center center">
+              <b>No. Serie</b>
+            </div>
+            <div fxFlex="20" fxLayoutAlign="center center"><b>Cantidad</b></div>
+            <div fxFlex="60" fxLayoutAlign="center center">
+              <b>Descripción</b>
+            </div>
+          </div>
+          <ng-container
+            *ngIf="
+              maintenance.materials ? maintenance.materials.length > 0 : false;
+              else emptyMaterial
+            "
+          >
+            <div
+              fxLayout="row"
+              class="info"
+              *ngFor="let material of maintenance.materials"
+            >
+              <div fxFlex="5"></div>
+              <div fxFlex="33">{{ material.serialNumber }}</div>
+              <div fxFlex="33">{{ material.quantity }}</div>
+              <div fxFlex="38">{{ material.description }}</div>
+              <div fxFlex="5"></div>
+            </div>
+          </ng-container>
+          <ng-template #emptyMaterial>
+            <div fxLayout="row" class="info">
+              <div fxFlex="20" class="divborder"></div>
+              <div fxFlex="20" class="divborder"></div>
+              <div fxFlex="60" class="divborder"></div>
+            </div>
+          </ng-template>
+          <br />
+          
+          <ng-container *ngIf="maintenance.isRepair">
+            <div fxLayout="row" class="header">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <b> Tipo de reparación</b>
+              </div>
+            </div>
+            <div class="divborderRepair">
+              {{ maintenance.typeRepair }}
+            </div>
+          </ng-container>
+          <br />
+        
+          <div fxLayout="row" class="header">
+            <div fxFlex="5"></div>
+            <div fxFlex="33"></div>
+            <div fxFlex="33"><b>Detalles del servicio</b></div>
+            <div fxFlex="33"></div>
+            <div fxFlex="5"></div>
+          </div>
+          <div class="divborder">
+            {{ maintenance.serviceDetails }}
+          </div>
+          <br />
+          
+          <div fxLayout="row" fxLayoutGap="50px">
+            <div fxFlex="10"></div>
+            <div fxFlex="40" class="header">
+              <b> &nbsp;&nbsp;&nbsp;&nbsp;Nombre y firma técnico</b>
+            </div>
+            <div fxFlex="40" class="header">
+              <b> &nbsp;&nbsp;&nbsp;Nombre y firma Sucursal</b>
+            </div>
+            <div fxFlex="10"></div>
+          </div>
+          <div fxLayout="row" fxLayoutGap="50px">
+            <div fxFlex="10"></div>
+            <div fxFlex="40" class="info" style="height: 30px">
+              &nbsp;{{ maintenance.technicianKey.displayName }}
+            </div>
+            <div fxFlex="40" class="info" style="height: 30px"></div>
+            <div fxFlex="10"></div>
+          </div>
+
+          <br />
+          <div fxLayout="column">
+            <div fxLayout="row">
+              <div class="square"></div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;Recibió asesoria en el suministro de gas
+                para evitar el sobre llenado en los tanques
+              </div>
+            </div>
+            <div fxLayout="row">
+              <div class="square"></div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;Se le informó sobre la importancia de
+                purgar los tanques diariamente
+              </div>
+            </div>
+            <div fxLayout="row">
+              <div class="square"></div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;Recibió información acerca de los daños
+                que causa el lavado de motor en las unidades
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button (click)="exportPdf(maintenance.orderNumber)">
+      Exportar PDF
+    </button>
+  </mat-dialog-actions>
+</ng-container>

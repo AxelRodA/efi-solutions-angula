@@ -1,0 +1,12 @@
+.container {
+  padding: 15px;
+  .mat-raised-button {
+    color: #13a2cd;
+  }
+  table {
+      width: 100%;
+      .mat-row {
+          height: auto;
+      }
+  }
+}

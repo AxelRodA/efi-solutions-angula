@@ -1,0 +1,114 @@
+<div class="container" fxLayout="column" fxLayoutGap="15px">
+  <div fxLayout="row" fxLayoutGap="15px" class="headline">
+    <div></div>
+    <div class="spacer"></div>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <button mat-raised-button (click)="newOfficeDialog()">
+        Nueva Oficina
+      </button>
+      <input #import type="file" hidden (change)="importOffices($event)" />
+      <button mat-raised-button (click)="exportCsv()">
+        <mat-icon>cloud_download</mat-icon> Exportar
+      </button>
+
+      <div class="spacer"></div>
+      <mat-form-field appearance="standard">
+        <mat-label>Buscar Oficina</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" />
+        <mat-icon matSuffix color="primary">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <div class="mat-elevation-z8">
+        <table #table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="region">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Region
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.region }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Nombre
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.name }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="street">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Calle
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.street }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="colony">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Colonia
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.colony }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="city">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Ciudad
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.city }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="state">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Estado
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.state }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="zip">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Codigo Postal
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.zip }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="technician">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Tecnico
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.technician">{{ row.technician.displayName }} </ng-container>
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="key">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon> more_vert </mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <!--<button mat-menu-item>Ver Detalles</button>-->
+                <button mat-menu-item (click)="editOffice(row.key, row)">Editar</button>
+                <button mat-menu-item (click)="deleteOffice(row.key)">Borrar</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

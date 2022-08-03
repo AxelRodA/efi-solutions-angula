@@ -1,0 +1,69 @@
+<div *ngIf="vs.vehicle$ | async">
+  <h2 mat-dialog-title>Economico: {{ vehicle.vehicleId }}</h2>
+  <mat-dialog-content fxLayout="column" fxLayoutGap="15px">
+    <div fxLayout="row" fxLayoutGap="15px">
+      <mat-list fxFlex="50" fxLayout="column">
+        <mat-list-item>
+          <h3 matLine>VIN</h3>
+          <p matLine>{{ vehicle.vin }}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h3 matLine>Carecteristicas</h3>
+          <p matLine>{{ vehicle.characteristics }}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h3 matLine>Proyecto</h3>
+          <p matLine>{{ vehicle.proyect.name }}</p>
+        </mat-list-item>
+      </mat-list>
+      <mat-list fxFlex="50" fxLayout="column">
+        <mat-list-item>
+          <h3 matLine>Oficina</h3>
+          <p matLine>{{ vehicle.office.name }}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h3 matLine>Fecha de Instalacion</h3>
+          <p matLine>{{ vehicle.instalationDate.toDate() | date: "dd/MM/yyyy" }}</p>
+        </mat-list-item>
+        <mat-list-item>
+          <h3 matLine>Creado</h3>
+          <p matLine>
+            {{ vehicle.created.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+          <p matLine>
+            {{ vehicle.createdBy.displayName }}
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <mat-list fxLayout="column" fxLayoutGap="5px">
+      <mat-list-item
+        *ngFor="let maintenance of vehicle.maintenances; let i = index"
+        [ngClass]="maintenance.status"
+      >
+        <h2 matLine [ngClass]="maintenance.status">
+         Mantenimiento #{{ i+1 }}
+        </h2>
+        <h3 matLine *ngIf="!maintenance.actualDate">
+          {{ maintenance.forecastDate.toDate()| date: "dd/MM/yyyy" }}
+        </h3>
+        <h3 matLine *ngIf="maintenance.actualDate">
+          {{ maintenance.actualDate.toDate() | date: "dd/MM/yyyy" }}
+        </h3>
+        <p matLine>
+          {{ maintenance.status }}
+        </p>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="editForecastDialog(maintenance.maintenanceNumber)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end">
+    <button mat-button [mat-dialog-close]="true">Cerrar</button>
+  </mat-dialog-actions>
+</div>

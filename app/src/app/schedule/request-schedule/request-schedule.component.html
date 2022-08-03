@@ -1,0 +1,39 @@
+<mat-dialog-content>
+  <div fxLayout="column">
+    <div>
+      Buenas tardes, <br />
+      <br />
+      Les comparto el cronograma de mantenimientos preventivos a unidades
+      híbridas del {{ scheduleInfo.start | date: "d/M/yy" }} -
+      {{ scheduleInfo.end | date: "d/M/yy" }}.
+    </div>
+    <br />
+    <div>Atendidas por: {{ scheduleInfo.technician }}</div>
+    <br />
+    <app-schedule-list></app-schedule-list>
+    <br />
+    <div>
+      Solicito su apoyo con los accesos a cada sucursal, así como el reporte de
+      alguna falla al recibir este correo para que los técnicos puedan ir
+      preparados con las refacciones necesarias. Así mismo la autorización de
+      uso de teléfono celular dentro de las instalaciones ya que es necesario
+      para la realización de su trabajo.<br /><br />
+      Este cronograma puede variar debido a retrasos en sucursal, cambios o
+      cancelaciones en las corridas de autobuses o por algún tipo de
+      contingencia, por lo que pedimos su comprensión, apoyo y flexibilidad.
+      Favor de confirmar de recibido, la disponibilidad de las unidades y el
+      horario en cada sucursal. Sin más por el momento, quedo a tus órdenes y en
+      espera de las autorizaciones correspondientes.
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button
+      mat-button
+      mat-dialog-close
+      color="accent"
+    >
+      Enviar
+    </button>
+</mat-dialog-actions>

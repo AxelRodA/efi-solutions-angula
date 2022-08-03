@@ -1,0 +1,40 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card fxLayout="column" fxLayoutGap="15px">
+    <div fxLayoutAlign="center center">
+      <img src="../../../assets/img/logo 1.png" alt="" />
+    </div>
+    <form fxLayout="column" [formGroup]="loginForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Correo Eléctronico</mat-label>
+        <input
+          matInput
+          placeholder="Ingresa tu correo eléctronico"
+          formControlName="email"
+          type="email"
+          autocomplete="username"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Ingresa tu contraseña"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+      </mat-form-field>
+    </form>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="loginForm.invalid"
+      (click)="signIn()"
+    >
+      Ingresar
+    </button>
+    <h5 fxLayoutAlign="center center">
+        © Copyright 2020 Efi@Isolutions – All Rights Reserved
+      </h5>
+  </mat-card>
+</div>

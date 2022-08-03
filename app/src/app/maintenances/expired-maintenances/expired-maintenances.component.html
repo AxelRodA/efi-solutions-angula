@@ -1,0 +1,135 @@
+<div class="container">
+  <div fxLayout="row" fxLayoutGap="15px" class="headline">
+    <div></div>
+    <div class="spacer"></div>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <div><h2>Mantenimientos Vencidos</h2></div>
+      <div class="spacer"></div>
+      <mat-form-field appearance="standard">
+        <mat-label>Buscar Tecnico</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" />
+        <mat-icon matSuffix color="primary">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="serviceDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Fecha de Servicio
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.serviceDate">
+                {{ row.serviceDate.toDate() | date: "dd/MM/yyyy" }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="vehicleKey">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehiculo</th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.vehicleKey">
+                {{ row.vehicleKey.vehicleId }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="orderNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              # Servicio
+            </th>
+            <td mat-cell *matCellDef="let row">{{ row.orderNumber }}</td>
+          </ng-container>
+          <ng-container matColumnDef="isMaintanence">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Mantenimiento
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <div fxLayoutAlign="center">
+                <mat-icon color="accent" *ngIf="row.isMaintanence">
+                  check_circle
+                </mat-icon>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="maintenanceNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              # Mantenimiento
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.maintenanceNumber">
+                {{ row.maintenanceNumber }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="isRepair">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Reparación
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <div fxLayoutAlign="center">
+                <mat-icon color="accent" *ngIf="row.isRepair">
+                  check_circle
+                </mat-icon>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="officeKey">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sucursal</th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.officeKey">
+                {{ row.officeKey.name }}
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vehicleKmBefore">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Km Antes</th>
+            <td mat-cell *matCellDef="let row">{{ row.vehicleKmBefore }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="technicianKey">
+            <th mat-header-cell *matHeaderCellDef>Tecnico</th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.technicianKey">
+                {{ row.technicianKey.displayName }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="key">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button
+                mat-icon-button
+                color="primary"
+                [matMenuTriggerFor]="menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="actions('view', row.key)">
+                  <mat-icon>visibility</mat-icon>
+                  Ver
+                </button>
+                <button mat-menu-item (click)="actions('edit', row.key, row)">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+                <button mat-menu-item (click)="deleteMaintenance(row.key)">
+                  <mat-icon>delete</mat-icon>
+                  Borrar
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

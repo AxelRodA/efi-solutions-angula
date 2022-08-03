@@ -1,0 +1,163 @@
+<ng-container *ngIf="ms.maintenance$ | async as maintenance">
+  <h2 mat-dialog-title>Orden de trabajo: {{ maintenance.orderNumber }}</h2>
+  <mat-dialog-content>
+    <div #pdf id="pdf">
+      <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0" style="width: 100%">
+          <tr class="top">
+            <td colspan="4">
+              <table style="width: 100%">
+                <tr>
+                  <td class="title">
+                    <img
+                      src="../../../assets/img/logo 1.png"
+                      style="width: 100%; max-width: 300px"
+                    />
+                  </td>
+
+                  <td>
+                    Orden #: {{ maintenance.orderNumber }}<br />
+                    Creado:
+                    <ng-container *ngIf="maintenance.created">
+                      {{ maintenance.created.toDate() | date: "dd/MM/yyyy" }}
+                    </ng-container>
+                    <br />
+                    Fecha:
+                    <ng-container *ngIf="maintenance.serviceDate">
+                      {{
+                        maintenance.serviceDate.toDate() | date: "dd/MM/yyyy"
+                      }}
+                    </ng-container>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr class="information">
+            <td colspan="4">
+              <table>
+                <tr>
+                  <td>
+                    {{ maintenance.vehicleKey.vehicleId }}<br />
+                    {{ maintenance.officeKey.name }}<br />
+                    {{ maintenance.technicianKey.displayName }}
+                  </td>
+
+                  <td>
+                    Reparación:
+                    <ng-container>{{
+                      maintenance.isRepair ? "Si" : "No"
+                    }}</ng-container>
+                    <br />
+                    Mantenimiento:
+                    <ng-container>{{
+                      maintenance.isMaintanence ? "Si" : "No"
+                    }}</ng-container
+                    ><br />
+                    Mantenimiento #:
+                    <ng-container>{{
+                      maintenance.maintenanceNumber
+                    }}</ng-container>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr class="heading">
+            <td>No. Serie</td>
+
+            <td>KM Anterior</td>
+            <td>KM Actual</td>
+          </tr>
+
+          <tr class="details">
+            <td>{{ maintenance.vehicleKey.vin }}</td>
+            <td>{{ maintenance.vehicleKmBefore }}</td>
+
+            <td>{{ maintenance.vehicleKmAfter }}</td>
+          </tr>
+          <div style="font-size: 20px">Materiales</div>
+          <tr class="heading">
+            <td style="text-align: center">Cantidad</td>
+            <td>No. Serie</td>
+            <td>Descripcion</td>
+          </tr>
+          <tr class="item">
+            <td style="text-align: center">2</td>
+            <td>12465sda</td>
+            <td>valvula 2cs</td>
+          </tr>
+          <tr class="item">
+            <td style="text-align: center">6</td>
+            <td>train</td>
+            <td>valvula 4cs</td>
+          </tr>
+        </table>
+        <div style="width: 100%; margin-top: 20px">
+          <div
+            style="
+              text-align: center;
+              width: 100%;
+              background-color: #eeeeee;
+              padding-top: 5px;
+              padding-bottom: 5px;
+              font-weight: 700;
+              font-size: 16px;
+              color: #555;
+            "
+          >
+            Detalles Del Servicios
+          </div>
+          <div style="border: solid 1px #eee; height: 200px">
+            {{ maintenance.serviceDetails }}
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="50px" style="margin-top: 50px">
+          <div fxFlex="50">
+            <div
+              style="
+                text-align: center;
+                width: 100%;
+                background-color: #eeeeee;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-weight: 700;
+                font-size: 16px;
+                color: #555;
+              "
+            >
+              Nombre y Firma Tecnico
+            </div>
+            <div style="border: solid 1px #eee; height: 50px"></div>
+          </div>
+          <div fxFlex="50">
+            <div
+              style="
+                text-align: center;
+                width: 100%;
+                background-color: #eeeeee;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-weight: 700;
+                font-size: 16px;
+                color: #555;
+              "
+            >
+              Nombre y Firma Sucursal
+            </div>
+            <div style="border: solid 1px #eee; height: 50px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button (click)="exportPdf(maintenance.orderNumber)">
+      Exportar PDF
+    </button>
+  </mat-dialog-actions>
+</ng-container>

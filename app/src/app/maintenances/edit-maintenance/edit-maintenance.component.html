@@ -1,0 +1,106 @@
+<form fxLayout="column" [formGroup]="editMaintanenceForm">
+  <ng-container *ngIf="orderNumber; else elseTemplate">
+    <h2 mat-dialog-title>Orden: {{ orderNumber }}</h2>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <h2 mat-dialog-title>Editar Orden Servico</h2>
+  </ng-template>
+
+  <mat-dialog-content fxLayout="column" fxLayoutGap="15px">
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Servicio</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="serviceDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursal</mat-label>
+      <mat-select
+        (selectionChange)="this.vs.getVehiclesByOffice($event.value)"
+        formControlName="office"
+      >
+        <ng-container *ngIf="os.offices$ | async as offices">
+          <mat-option *ngFor="let office of offices" [value]="office.key">
+            {{ office.region }} - {{ office.name }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let type of statusMaintenance" [value]="type">{{
+          type
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Vehiculo</mat-label>
+      <input matInput formControlName="vehicle" readonly />
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <div fxFlex="50">
+        <mat-slide-toggle
+          formControlName="maintenance"
+          (change)="maintanenceChange()"
+          >Mantenimiento</mat-slide-toggle
+        >
+      </div>
+      <div fxFlex="50">
+        <mat-slide-toggle
+          formControlName="service"
+          (change)="maintanenceChange()"
+          >Garantía</mat-slide-toggle
+        >
+      </div>
+    </div>
+    <mat-form-field appearance="outline" *ngIf="maintenance == true">
+      <mat-label>Tipo de Mantenimiento</mat-label>
+      <mat-select
+        formControlName="typeOfService"
+        (selectionChange)="maintanenceChange($event.value)"
+      >
+        <mat-option *ngFor="let type of typeOfServices" [value]="type">{{
+          type
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="service == true">
+      <mat-label>Tipo de reparacion</mat-label>
+      <input matInput formControlName="typeRepair" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="maintenance == true">
+      <mat-label>Numero de Mantenimiento</mat-label>
+      <input matInput formControlName="maintenanceNumber" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="40">
+      <mat-label>Tecnico</mat-label>
+      <mat-select formControlName="technicianKey">
+        <ng-container *ngIf="ts.technicians$ | async as technicians">
+          <mat-option
+            *ngFor="let technician of technicians"
+            [value]="technician.uid"
+          >
+            {{ technician.displayName }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button
+      mat-button
+      mat-dialog-close
+      color="accent"
+      [disabled]="editMaintanenceForm.invalid"
+      (click)="editMaintenance()"
+    >
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</form>

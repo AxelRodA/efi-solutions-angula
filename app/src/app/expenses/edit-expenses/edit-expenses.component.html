@@ -1,0 +1,112 @@
+<h2 mat-dialog-title>Editar Gasto</h2>
+<mat-dialog-content>
+  <form [formGroup]="editExpensesForm" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Gasto</mat-label>
+      <mat-select
+        formControlName="expenseType"
+        (selectionChange)="ExpenseTypeChange($event.value)"
+      >
+        <mat-option *ngFor="let type of expenseTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha del Gasto</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="expenseDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Monto</mat-label>
+      <input matInput formControlName="amount" type="number" />
+      <mat-icon matPrefix color="accent">attach_money</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursal</mat-label>
+      <mat-select formControlName="office">
+        <ng-container *ngIf="os.offices$ | async as offices">
+          <mat-option *ngFor="let office of offices" [value]="office.key">
+            {{ office.name }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      *ngIf="expenseType == 'Bus' || expenseType == 'Avion'"
+    >
+      <mat-label>Origen</mat-label>
+      <input matInput formControlName="destinationIni" />
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      *ngIf="expenseType == 'Bus' || expenseType == 'Avion'"
+    >
+      <mat-label>Destino</mat-label>
+      <input matInput formControlName="destinationEnd" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="expenseType == 'Gasolina'">
+      <mat-label>Kilometros</mat-label>
+      <input matInput formControlName="km" type="number" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="expenseType == 'Hotel'">
+      <mat-label>Noches</mat-label>
+      <input matInput formControlName="nights" type="number" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="expenseType == 'Taxi'">
+      <mat-label>Origen - Destino</mat-label>
+      <mat-select formControlName="taxiDestination">
+        <mat-option
+          *ngFor="let destination of taxiDestinations"
+          [value]="destination"
+        >
+          {{ destination }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="expenseType == 'Otros'">
+      <mat-label>Detalles de Gasto</mat-label>
+      <textarea matInput formControlName="expenseDetails" rows="3"></textarea>
+    </mat-form-field>
+    <button
+      mat-button
+      color="primary"
+      (click)="file.click()"
+      *ngIf="!fileState && expenseType != 'Alimentos'"
+    >
+      Comprobante
+      <mat-icon>attach_file</mat-icon>
+    </button>
+
+    <mat-progress-bar
+      *ngIf="percentage | async as percent"
+      [value]="percent"
+    ></mat-progress-bar>
+    <h5 fxLayoutAlign="center" *ngIf="snapshot | async as snap">
+      {{ snap.bytesTransferred }} de {{ snap.totalBytes }}
+    </h5>
+
+    <input
+      type="file"
+      hidden
+      #file
+      (change)="uploadFile($event.target.files[0])"
+    />
+    <h3 *ngIf="fileState" style="color: green" fxLayoutAlign="center ">
+      Comprobante cargado exitosamente
+    </h3>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-button
+    mat-dialog-close
+    color="primary"
+    (click)="editExpenses()"
+  >
+    Guardar
+  </button>
+</mat-dialog-actions>

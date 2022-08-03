@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Formulario</h2>
+<mat-dialog-content>
+  <form [formGroup]="scheduleForm" fxLayout="column">
+    <mat-form-field appearance="outline" fxFlex="40">
+      <mat-label>Tecnico</mat-label>
+      <mat-select formControlName="technicianKey">
+        <ng-container *ngIf="ts.technicians$ | async as technicians">
+          <mat-option
+            *ngFor="let technician of technicians"
+            [value]="technician"
+          >
+            {{ technician.displayName }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursal</mat-label>
+      <mat-select formControlName="office" multiple>
+        <ng-container *ngIf="os.offices$ | async as offices">
+          <mat-option *ngFor="let office of offices" [value]="office">
+            {{ office.name }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seleciona Rango de Fechas</mat-label>
+      <mat-date-range-input
+        [rangePicker]="picker"
+       
+      >
+        <input matStartDate placeholder="Inicio"  formControlName="start"/>
+        <input matEndDate placeholder="Fin"  formControlName="end" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button mat-button mat-dialog-close color="primary" (click)="newSchedule()">
+    Crear
+  </button>
+</mat-dialog-actions>

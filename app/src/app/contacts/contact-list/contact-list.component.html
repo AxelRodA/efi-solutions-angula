@@ -1,0 +1,78 @@
+<div class="container" fxLayout="column" fxLayoutGap="15px">
+  <div fxLayout="row" fxLayoutGap="15px" class="headline">
+    <div></div>
+    <div class="spacer"></div>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <button mat-raised-button (click)="newContactDialog()">
+        Nuevo Contacto
+      </button>
+
+      <div class="spacer"></div>
+      <mat-form-field appearance="standard">
+        <mat-label>Buscar Contacto</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" />
+        <mat-icon matSuffix color="primary">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <div class="mat-elevation-z8">
+        <table #table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="role">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Posición</th>
+            <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cellphone">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              Teléfono celular
+            </th>
+            <td mat-cell *matCellDef="let row">{{ row.cellphone }}</td>
+          </ng-container>
+          <ng-container matColumnDef="lada">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Lada</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.lada }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="phoneNumbers">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Teléfono</th>
+            <td mat-cell *matCellDef="let row">{{ row.phoneNumbers }}</td>
+          </ng-container>
+          <ng-container matColumnDef="ext">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Extensión</th>
+            <td mat-cell *matCellDef="let row">{{ row.ext }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.email }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="key">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon> more_vert </mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editContact(row.key, row)">Editar</button>
+                <button mat-menu-item (click)="deleteContacto(row.key)">Borrar</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

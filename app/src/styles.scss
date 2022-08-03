@@ -1,0 +1,154 @@
+@import "~@angular/material/theming";
+@include mat-core();
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+// define a real custom palette (using http://mcg.mbitson.com)
+$md-efisolutions-primary: (
+  50: #e3f4f9,
+  100: #b8e3f0,
+  200: #89d1e6,
+  300: #5abedc,
+  400: #36b0d5,
+  500: #13a2cd,
+  600: #119ac8,
+  700: #0e90c1,
+  800: #0b86ba,
+  900: #0675ae,
+  A100: #d9f0ff,
+  A200: #a6ddff,
+  A400: #73caff,
+  A700: #59c0ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$md-efisolutions-secondary: (
+  50: #f2f7e8,
+  100: #e0eac5,
+  200: #cbdd9e,
+  300: #b6cf77,
+  400: #a6c459,
+  500: #96ba3c,
+  600: #8eb336,
+  700: #83ab2e,
+  800: #79a327,
+  900: #68941a,
+  A100: #ebffcb,
+  A200: #d7ff98,
+  A400: #c3ff65,
+  A700: #b9ff4c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+$efisolutions-red: (
+  50: #fce4e5,
+  100: #f7bbbd,
+  200: #f28d91,
+  300: #ed5f65,
+  400: #e93d44,
+  500: #e51b23,
+  600: #e2181f,
+  700: #de141a,
+  800: #da1015,
+  900: #d3080c,
+  A100: #fffcfc,
+  A200: #ffc9ca,
+  A400: #ff9697,
+  A700: #ff7d7e,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: $black-87-opacity,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: $black-87-opacity,
+    A200: $black-87-opacity,
+    A400: $black-87-opacity,
+    A700: white,
+  ),
+);
+
+$efisolutions-app-primary: mat-palette($md-efisolutions-primary);
+$efisolutions-app-accent: mat-palette($md-efisolutions-secondary);
+$efisolutions-app-warn: mat-palette($efisolutions-red);
+$efisolutions-app-theme: mat-light-theme(
+  $efisolutions-app-primary,
+  $efisolutions-app-accent,
+  $efisolutions-app-warn
+);
+@include angular-material-theme($efisolutions-app-theme);
+
+html,
+body {
+  height: 100vh;
+}
+body {
+  margin: 0;
+  font-family: poppins, "Helvetica Neue", sans-serif;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-table {
+  width: 100%;
+  overflow-x: auto;
+  th {
+    font-size: 14px;
+  }
+  .mat-header-cell {
+    align-items: center;
+  }
+  .mat-row {
+    height: auto;
+  }
+
+  .mat-cell {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: keep-all;
+  }
+
+  .mat-row:nth-child(even) {
+    background-color: #fff;
+  }
+
+  .mat-row:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  .mat-row:hover {
+    background-color: #e3f4f9;
+  }
+}

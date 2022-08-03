@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "efisolutions-d6766": {
+      "hosting": {
+        "app": [
+          "efisolutions-d6766"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "efisolutions-d6766"
+  }
+}

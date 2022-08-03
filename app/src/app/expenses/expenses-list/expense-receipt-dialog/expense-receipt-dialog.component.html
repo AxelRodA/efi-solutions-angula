@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Comprobante</h2>
+<mat-dialog-content fxLayout="column">
+  <iframe
+    [src]="url"
+   
+    *ngIf="url"
+    frameborder="0"
+    style="
+      height: 300px;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+    "
+    height="100%"
+    width="100%"
+  >
+  </iframe>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button (click)="viewNewTab()">Vista Completa</button>
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

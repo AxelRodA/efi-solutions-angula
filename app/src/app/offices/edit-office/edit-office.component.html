@@ -1,0 +1,64 @@
+<form fxLayout="column" [formGroup]="editOfficeForm">
+    <h2 mat-dialog-title>Editar sucursal</h2>
+    <mat-dialog-content fxLayout="column">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" fxFlex="40">
+          <mat-label>Region</mat-label>
+          <mat-select formControlName="region">
+            <mat-option *ngFor="let region of regions" [value]="region">
+              {{region}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="60">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-label>Calle</mat-label>
+          <input matInput formControlName="street" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-label>Colonia</mat-label>
+          <input matInput formControlName="colony" />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" fxFlex="40">
+          <mat-label>Ciudad</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="40">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="state">
+            <mat-option *ngFor="let state of states" [value]="state">
+              {{state}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="20">
+          <mat-label>Codigo Postal</mat-label>
+          <input matInput formControlName="zip" />
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Technico</mat-label>
+        <mat-select formControlName="technician">
+          <ng-container *ngIf="ts.technicians$ | async as technicians">
+            <mat-option *ngFor="let technician of technicians" [value]="technician.uid">
+              {{ technician.displayName }} 
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end end">
+      <button mat-button mat-dialog-close color="warn">Cancelar</button>
+      <button mat-button mat-dialog-close color="primary" [disabled]="editOfficeForm.invalid" (click)="editOffice()">
+        Guardar
+      </button>
+    </mat-dialog-actions>
+  </form>
+  

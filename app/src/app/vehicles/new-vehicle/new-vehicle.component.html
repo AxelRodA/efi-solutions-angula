@@ -1,0 +1,59 @@
+<form [formGroup]="newVehicleForm" fxLayout="column" fxLayoutGap="15px">
+  <h2 mat-dialog-title>Agregar Economico</h2>
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Numero</mat-label>
+      <input matInput formControlName="id" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>VIN</mat-label>
+      <input matInput formControlName="vin" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Carecteristicas</mat-label>
+      <input matInput formControlName="characteristics" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="40">
+      <mat-label>Proyecto</mat-label>
+      <mat-select formControlName="proyect">
+        <ng-container *ngIf="vs.projects$ | async as projects">
+          <mat-option *ngFor="let project of projects" [value]="project.key">
+            {{ project.name}}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Instalacion</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="instalationDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="40">
+      <mat-label>Sucursal</mat-label>
+      <mat-select formControlName="office">
+        <ng-container *ngIf="os.offices$ | async as offices">
+          <mat-option *ngFor="let office of offices" [value]="office">
+            {{ office.region }} - {{ office.name }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end">
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button
+      mat-button
+      mat-dialog-close
+      color="accent"
+      [disabled]="newVehicleForm.invalid"
+      (click)="newVehicle()"
+    >
+      Agregar
+    </button>
+  </mat-dialog-actions>
+</form>

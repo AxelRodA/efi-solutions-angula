@@ -1,0 +1,144 @@
+<div
+  class="container"
+  fxLayout="column"
+  fxLayoutGap="15px"
+  *ngIf="auth.user$ | async as user "
+>
+  <div fxLayout="row" class="banner" fxLayoutGap="10px">
+    <img src="../../../assets/img/home.png" alt="" />
+    <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+      <div style="font-size: 20px">Bienvenido {{ user.displayName }}</div>
+      <div style="font-size: 16px; color: gray">
+        {{ today | date: "dd/MM/yyyy" }}
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+  <div *ngIf="user.role == 'admin'" fxHide.lt-md="true">
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style"
+        appearance="legacy"
+      >
+        <mat-button-toggle
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+          >Previous</mat-button-toggle
+        >
+        <mat-button-toggle mwlCalendarToday [(viewDate)]="viewDate">
+          Today
+        </mat-button-toggle>
+        <mat-button-toggle
+          color="accent"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Next</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+      <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style"
+        appearance="legacy"
+      >
+        <mat-button-toggle
+          color="accent"
+          (click)="setView(CalendarView.Month)"
+          [class.active]="view === CalendarView.Month"
+        >
+          Month</mat-button-toggle
+        >
+        <mat-button-toggle
+          (click)="setView(CalendarView.Week)"
+          [class.active]="view === CalendarView.Week"
+        >
+          Week</mat-button-toggle
+        >
+        <mat-button-toggle
+          color="accent"
+          (click)="setView(CalendarView.Day)"
+          [class.active]="view === CalendarView.Day"
+        >
+          Day</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </div>
+    <mat-card>
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+          *ngSwitchCase="CalendarView.Month"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+        >
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+          *ngSwitchCase="CalendarView.Week"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+        >
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view
+          *ngSwitchCase="CalendarView.Day"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+        >
+        </mwl-calendar-day-view>
+      </div>
+    </mat-card>
+  </div>
+  <mat-list
+    *ngIf="vs.vehicles$ | async as vehicles"
+    fxLayout="column"
+    fxLayoutGap="5px"
+    fxHide.gt-sm="true"
+    style="height: 400px; overflow: auto;"
+  >
+    <ng-container *ngFor="let vehicle of vehicles">
+      <ng-container *ngFor="let maintenance of vehicle.maintenances">
+        <mat-list-item
+          [class]="maintenance.status"
+          *ngIf="
+            (maintenance.forecastDate >= monday &&
+              maintenance.forecastDate < sunday) ||
+            (maintenance.programedDate >= monday &&
+              maintenance.programedDate < sunday) ||
+            (maintenance.actualDate >= monday &&
+              maintenance.actualDate < sunday)
+          "
+          class="shadow-sm"
+        >
+          <mat-icon matListIcon [ngClass]="maintenance.status">
+            {{ icons[maintenance.maintenanceNumber] }}
+          </mat-icon>
+          <p matLine class="demo-2">
+            {{ vehicle.office.name }} - {{ vehicle.vehicleId }}
+          </p>
+          <p matLine *ngIf="maintenance.status == 'Pendiente'">
+            {{ maintenance.forecastDate.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+          <p matLine *ngIf="maintenance.status == 'Programado'">
+            {{ maintenance.programedDate.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+
+          <p matLine *ngIf="maintenance.status == 'Completado'">
+            {{ maintenance.actualDate.toDate() | date: "dd/MM/yyyy" }}
+          </p>
+        </mat-list-item>
+      </ng-container>
+    </ng-container>
+  </mat-list>
+</div>

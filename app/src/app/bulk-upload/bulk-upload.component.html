@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Carga Masiva</h2>
+<mat-dialog-content fxLayout="column">
+
+    <mat-form-field appearance="outline" [(ngModel)]="uploadCollection" ngDefaultControl>
+        <mat-label>Carga de archivos excel</mat-label>
+        <mat-select
+        >
+          <mat-option *ngFor="let type of uploadType" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    <button
+    mat-button
+    color="primary"
+    (click)="upload.click()"
+    *ngIf="!currentJson"
+  >
+    <mat-icon>insert_drive_file</mat-icon>
+    Carga Excel
+  </button>
+  <input type="file" (change)="fileChange($event)" #upload hidden />
+  <button
+    mat-icon-button
+    color="warn"
+    *ngIf="currentJson"
+    (click)="clearCurrentJson()"
+    matTooltip="Cancelar"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <button
+    mat-button
+    color="primary"
+    *ngIf="currentJson"
+    (click)="batchUpload()"
+  >
+    Cargar {{ currentJson.length }} Registros
+    <mat-icon *ngIf="!percent">cloud_upload</mat-icon>
+    <mat-progress-bar
+      [value]="percent"
+      *ngIf="percent"
+    ></mat-progress-bar>
+  </button>
+  <button mat-button mat-dialog-close color="warn">Cerrar</button>
+</mat-dialog-content>

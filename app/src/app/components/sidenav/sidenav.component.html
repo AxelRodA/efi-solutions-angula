@@ -1,0 +1,11 @@
+<div fxLayout="column" class="container">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <img src="../../../assets/img/logo 1.png" alt="" />
+  </div>
+  <mat-nav-list>
+    <mat-list-item *ngFor="let m of modules" [routerLink]="m.link">
+      <mat-icon matListIcon>{{m.icon}} </mat-icon>
+      <h3 matLine> {{m.text}} </h3>
+    </mat-list-item>
+  </mat-nav-list>
+</div>

@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>Editar Deposito</h2>
+<mat-dialog-content>
+  <form [formGroup]="editDepositForm" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha del Deposito</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="depositDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Monto</mat-label>
+      <input matInput formControlName="amount" type="number" />
+      <mat-icon matPrefix color="accent">attach_money</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tecnico</mat-label>
+      <mat-select formControlName="technician">
+        <ng-container *ngIf="ts.technicians$ | async as technicians">
+          <mat-option
+            *ngFor="let technician of technicians"
+            [value]="technician.uid"
+          >
+            {{ technician.displayName }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" >
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="office">
+          <ng-container *ngIf="os.offices$ | async as offices">
+            <mat-option *ngFor="let office of offices" [value]="office.key">
+              {{ office.name }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    <button mat-button color="primary" (click)="file.click()">
+      Comprobante
+      <mat-icon>attach_file</mat-icon>
+    </button>
+
+    <mat-progress-bar
+      *ngIf="percentage | async as percent"
+      [value]="percent"
+    ></mat-progress-bar>
+    <h5 fxLayoutAlign="center" *ngIf="snapshot | async as snap">
+      {{ snap.bytesTransferred }} de {{ snap.totalBytes }}
+    </h5>
+
+    <input
+      type="file"
+      hidden
+      #file
+      (change)="uploadFile($event.target.files[0])"
+    />
+    <h3 *ngIf="fileState" style="color: green" fxLayoutAlign="center ">
+      Comprobante cargado exitosamente
+    </h3>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="editDepositForm.invalid"
+    color="primary"
+    (click)="editDeposit()"
+  >
+    Guardar
+  </button>
+</mat-dialog-actions>
+

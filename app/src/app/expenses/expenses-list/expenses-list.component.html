@@ -1,0 +1,98 @@
+<div fxLayout="column" fxLayoutGap="20px" class="container" *ngIf="user">
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+    <div fxLayout>
+      <img src="../../../assets/img/expenses-1.png" alt="" />
+      <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+        <div style="font-size: 24px">Gastos</div>
+        <div style="font-size: 16px; color: gray">
+          Administracion de Gastos y Depositos
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="15px"
+      fxLayout.lt-md="column"
+      fxLayoutAlign.lt-md="center"
+    >
+      <mat-form-field *ngIf="user.role == 'admin'">
+        <mat-label>Tecnico</mat-label>
+        <mat-select (selectionChange)="getTecnicianExpenses($event.value)">
+          <mat-option value="">Todos</mat-option>
+          <ng-container *ngIf="ts.technicians$ | async as technicians">
+            <mat-option
+              *ngFor="let technician of technicians"
+              [value]="technician"
+            >
+              {{ technician.displayName }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <button
+        *ngIf="user.role == 'admin'"
+        mat-raised-button
+        color="primary"
+        style="color: #fff"
+        (click)="newDepositDialog()"
+      >
+        Deposito
+      </button>
+      <button mat-raised-button color="warn" (click)="addExpenseDialog()">
+        Gasto
+      </button>
+    </div>
+  </div>
+
+  <mat-list
+    fxLayout="row"
+    fxLayoutGap="20px"
+    *ngIf="stats"
+    fxLayout.lt-md="column"
+  >
+    <mat-list-item class="mat-elevation-z2">
+      <mat-icon matListIcon color="accent">account_balance</mat-icon>
+      <h3 matLine style="color: #e51b23" *ngIf="avaliableAmount < 0">
+        {{ avaliableAmount }}
+      </h3>
+      <h3
+        matLine
+        style="color: green"
+        *ngIf="avaliableAmount >= 0 || avaliableAmount == '-'"
+      >
+        {{ avaliableAmount }}
+      </h3>
+      <p matLine>Saldo Disponible</p>
+    </mat-list-item>
+    <mat-list-item class="mat-elevation-z2">
+      <mat-icon matListIcon color="primary">assignment</mat-icon>
+      <h3 matLine>{{ stats.expenses }}</h3>
+      <p matLine>Gastos Registrados</p>
+    </mat-list-item>
+    <mat-list-item class="mat-elevation-z2">
+      <mat-icon matListIcon color="warn">attach_money</mat-icon>
+      <h3 matLine style="color: #e51b23">{{ stats.totalSpentAmount }}</h3>
+      <p matLine>Total Gastado</p>
+    </mat-list-item>
+    <mat-list-item class="mat-elevation-z2">
+      <mat-icon matListIcon color="primary">assignment</mat-icon>
+      <h3 matLine>{{ stats.deposits }}</h3>
+      <p matLine>Depositos Registrados</p>
+    </mat-list-item>
+    <mat-list-item class="mat-elevation-z2">
+      <mat-icon matListIcon style="color: green">attach_money</mat-icon>
+      <h3 matLine style="color: green">{{ stats.totalDepositAmount }}</h3>
+      <p matLine>Total Depositado</p>
+    </mat-list-item>
+  </mat-list>
+
+  <div fxLayout="column" fxHide.lt-md="true" fxLayoutGap="15px">
+    <app-expense-table [expenses]="expenses" *ngIf="expenses"></app-expense-table>
+    <app-deposit-table [deposits]="deposits" [user]="user" *ngIf="deposits"></app-deposit-table>
+  </div>
+  <div fxHide.gt-sm="true">
+    <app-expense-mobile-view [deposits]="deposits" [user]="user" [expenses]="expenses"  ></app-expense-mobile-view>
+  </div>
+</div>

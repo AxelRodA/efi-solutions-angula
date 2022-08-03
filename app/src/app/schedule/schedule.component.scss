@@ -1,0 +1,66 @@
+.container {
+  a {
+    color: #1e90ff;
+  }
+  padding: 15px;
+  .banner {
+    img {
+      width: 90px;
+      height: 65px;
+    }
+  }
+  h3 {
+    margin: 0 0 10px;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+  }
+}
+.mat-list {
+  .Completado {
+    border-left: 3px solid #2ae308;
+  }
+  .Programado {
+    border-left: 3px solid #1e90ff;
+  }
+  .Pendiente {
+    border-left: 3px solid #e3bc08;
+  }
+  .Cancelado {
+    border-left: 3px solid #ad2121;
+  }
+  .installed {
+    border-left: 3px solid #6c3483;
+  }
+  .mat-list-item {
+    border-radius: 5px;
+    .Completado {
+      color: #2ae308;
+      border-left: 0;
+    }
+    .Programado {
+      color: #1e90ff;
+      border-left: 0;
+    }
+    .Pendiente {
+      color: #e3bc08;
+      border-left: 0;
+    }
+    .Cancelado {
+      border-left: 0;
+      color: #ad2121;
+    }
+    .installed {
+      color: #6c3483;
+      border-left: 0;
+    }
+  }
+}
+
+.cal-week-view {
+  .cal-event {
+    color: black !important;
+  }
+}

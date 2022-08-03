@@ -1,0 +1,112 @@
+<div class="container" fxLayout="column" fxLayoutGap="15px">
+  <div fxLayout="row" fxLayoutGap="15px" class="headline">
+    <div></div>
+    <div class="spacer"></div>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <button mat-raised-button (click)="newVehicleDialog()">
+        Nuevo Vehiculo
+      </button>
+      <button mat-raised-button (click)="newProjectDialog()">
+        Nuevo Proyecto
+      </button>
+      <input #import type="file" hidden (change)="importMaintanences($event)" />
+      <button mat-raised-button (click)="import.click()">
+        Cargar Mantenimientos
+      </button>
+
+      <input #import type="file" hidden />
+      <button mat-raised-button (click)="exportCsv()">
+        <mat-icon>cloud_download</mat-icon> Exportar
+      </button>
+      <div class="spacer"></div>
+      <mat-form-field appearance="standard">
+        <mat-label>Buscar Economico</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" />
+        <mat-icon matSuffix color="primary">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="vehicleId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Economico</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.vehicleId }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="vin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>VIN</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.vin }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="characteristics">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Características
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.characteristics }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="instalationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Fecha Instalación
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.instalationDate">
+                {{ row.instalationDate.toDate() | date: "dd/MM/yyyy" }}
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="office">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sucursal</th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.office">
+                {{ row.office.name }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="proyect">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Proyecto</th>
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="row.proyect">
+                {{ row.proyect.name }}
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="key">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <td mat-cell *matCellDef="let row">
+              <button
+                mat-icon-button
+                color="primary"
+                [matMenuTriggerFor]="menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="actions('view', row)">
+                  <mat-icon>visibility</mat-icon>
+                  Ver
+                </button>
+                <button mat-menu-item (click)="actions('edit', row)">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[10, 20, 50, 100]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

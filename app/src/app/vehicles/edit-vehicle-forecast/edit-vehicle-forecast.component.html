@@ -1,0 +1,122 @@
+<h2 mat-dialog-title style="text-align: center">{{ data.event.title }}</h2>
+<mat-dialog-content fxLayout="column">
+  <form
+    [formGroup]="forecastForm"
+    fxLayout="column"
+    fxLayoutGap="15px"
+    *ngIf="vs.vehicle$ | async as vehicle"
+  >
+    <div fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field appearance="outline" fxFlex="20">
+        <mat-label># </mat-label>
+        <input matInput formControlName="maintenanceNumber" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="80">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Pronosticada</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="forecastDate"
+        readonly
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker"
+        disabled
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="status == 'Programado'">
+      <mat-label>Fecha de Programada</mat-label>
+      <input
+        matInput
+        [matDatepicker]="programedPicker"
+        formControlName="programedDate"
+        readonly
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="programedPicker"
+        disabled
+      ></mat-datepicker-toggle>
+      <mat-datepicker #programedPicker></mat-datepicker>
+    </mat-form-field>
+    <div *ngIf="status == 'Completado'" fxLayout="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Mantinimiento</mat-label>
+        <input
+          matInput
+          [matDatepicker]="actualPicker"
+          formControlName="actualDate"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="actualPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #actualPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Kilometros</mat-label>
+        <input matInput type="number" formControlName="kilometer" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Costo de Servicio</mat-label>
+        <input matInput type="number" formControlName="serviceCost" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Costo Extra</mat-label>
+        <input matInput type="number" formControlName="extraCost" />
+      </mat-form-field>
+
+      <div formArrayName="parts">
+        <div
+          *ngFor="let part of parts.controls; let i = index"
+          [formGroupName]="i"
+          fxLayout="row"
+          fxLayoutGap="10px"
+        >
+          <mat-form-field appearance="outline" fxFlex="60">
+            <mat-label>Parte</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="40">
+            <mat-label>Codigo</mat-label>
+            <input matInput formControlName="code" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button mat-button (click)="addPart()" color="primary">
+          Agregar Parte
+        </button>
+      </div>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Comentarios</mat-label>
+      <textarea matInput rows="2" formControlName="comments" ></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button
+    mat-button
+    mat-dialog-close
+    color="accent"
+    (click)="updateMaintenace()"
+    [disabled]="isDisabled"
+  >
+    Guardar
+  </button>
+</mat-dialog-actions>

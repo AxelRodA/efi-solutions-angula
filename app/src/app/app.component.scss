@@ -1,0 +1,24 @@
+.mat-toolbar {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+  img {
+    width: 192px;
+    height: 40px;
+  }
+}
+.mat-sidenav-container {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  .mat-sidenav-content {
+    height: 100vh;
+  }
+  .mat-sidenav {
+    min-width: 240px;
+  }
+}

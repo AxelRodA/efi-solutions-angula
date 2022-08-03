@@ -1,0 +1,14 @@
+.container {
+  height: 100vh;
+  background-image: url(../../../assets/img/sign-in.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  .mat-card {
+    img {
+      width: 200px;
+      height: 71px;
+    }
+    width: 350px;
+  }
+}
